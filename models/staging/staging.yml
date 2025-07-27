@@ -1,0 +1,103 @@
+version: 2
+
+sources:
+  - name: stg_sales
+    database: fea25_05
+    schema: raw_adventure_works
+    description: "Dados de vendas da Adventure Works na camada raw"
+    tables:
+      - name: SALES_SALESORDERHEADER
+        description: "Cabeçalho dos pedidos de vendas, contém informações gerais de cada pedido"
+        columns:
+          - name: SalesOrderID
+            description: "Chave primária do pedido"
+            tests:
+              - not_null
+              - unique
+          - name: CustomerID
+            description: "Chave estrangeira do cliente"
+            tests:
+              - not_null
+          - name: CreditCardID
+            description: "Chave estrangeira do cartão de crédito"
+          - name: Status
+            description: "Status do pedido (1=Em processo; 2=Aprovado; 3=Em espera; 4=Rejeitado; 5=Enviado; 6=Cancelado)"
+          - name: TotalDue
+            description: "Valor total do pedido incluindo impostos e frete"
+      - name: SALES_SALESORDERDETAIL
+        description: "Detalhes dos produtos vendidos em cada pedido"
+        columns:
+          - name: SalesOrderID
+            description: "Ligação com a tabela SalesOrderHeader"
+            tests:
+              - not_null
+          - name: SalesOrderDetailID
+            description: "Chave primária do detalhe do pedido"
+            tests:
+              - not_null
+              - unique
+          - name: ProductID
+            description: "Chave estrangeira do produto"
+            tests:
+              - not_null
+          - name: OrderQty
+            description: "Quantidade de itens comprados no pedido"
+            tests:
+              - not_null
+          - name: UnitPrice
+            description: "Preço unitário do produto"
+          - name: UnitPriceDiscount
+            description: "Desconto aplicado no preço unitário"
+      - name: SALES_CUSTOMER
+        description: "Dados cadastrais dos clientes"
+        columns:
+          - name: CustomerID
+            description: "Chave primária do cliente"
+            tests:
+              - not_null
+              - unique
+          - name: PersonID
+            description: "Ligação com a tabela Person"
+          - name: TerritoryID
+            description: "Chave estrangeira do território de vendas"
+      - name: PRODUCTION_PRODUCT
+        description: "Produtos vendidos ou fabricados pela empresa"
+        columns:
+          - name: ProductID
+            description: "Chave primária do produto"
+            tests:
+              - not_null
+              - unique
+          - name: Name
+            description: "Nome do produto"
+          - name: StandardCost
+            description: "Custo padrão do produto"
+          - name: ListPrice
+            description: "Preço de lista do produto"
+      - name: SALES_CREDITCARD
+        description: "Tipos e informações dos cartões de crédito"
+        columns:
+          - name: CreditCardID
+            description: "Chave primária do cartão de crédito"
+            tests:
+              - not_null
+              - unique
+          - name: CardType
+            description: "Tipo do cartão (ex.: Visa, MasterCard)"
+      - name: SALES_SALESREASON
+        description: "Motivos pelos quais o pedido foi realizado"
+        columns:
+          - name: SalesReasonID
+            description: "Chave primária do motivo"
+            tests:
+              - not_null
+              - unique
+          - name: Name
+            description: "Descrição do motivo da venda"
+      - name: SALES_SALESORDERHEADERSALESREASON
+        description: "Tabela de ligação entre pedidos de venda e motivos"
+        columns:
+          - name: SalesOrderID
+            description: "Ligação com a tabela SalesOrderHeader"
+          - name: SalesReasonID
+            description: "Ligação com a tabela SalesReason"
