@@ -31,12 +31,12 @@ final as (
         o.shipdate,
         i.salesorderdetailid,
         i.productid,
-        i.productname,
+        i.product_name,
         i.orderqty,
         i.unitprice,
         i.unitpricediscount,
         i.totalitemvalue,
-        r.salesreason
+        r.sales_reason
     from orders o
     left join items i
         on o.salesorderid = i.salesorderid
