@@ -15,12 +15,12 @@ reasons as (
 orders_with_reason as (
 
     select
-        orh.salesorderid,
-        sr.salesreasonid,
+        orh.sales_order_id,
+        sr.sales_reason_id,
         sr.name as sales_reason
     from order_reason orh
     left join reasons sr
-        on orh.salesreasonid = sr.salesreasonid
+        on orh.sales_reason_id = sr.sales_reason_id
 
 )
 

@@ -17,7 +17,7 @@ renamed as (
         ,color
         ,safetystocklevel
         ,reorderpoint
-        ,standardcost
+        ,standardcost as standard_cost
         ,listprice
         ,size
         ,sizeunitmeasurecode
