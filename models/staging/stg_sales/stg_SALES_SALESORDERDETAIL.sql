@@ -16,7 +16,7 @@ renamed as (
         productid as product_id,
         specialofferid as special_offer_id,
         unitprice as unit_price,
-        unitpricediscount as unit_precied_iscount,
+        unitpricediscount as unit_precied_discount,
         rowguid as rowgu_id,
         modifieddate as modified_date
 

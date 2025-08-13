@@ -1,0 +1,118 @@
+version: 2
+
+models:
+  - name: fact_sales
+    description: "Fato de vendas na granularidade de item de pedido, incluindo métricas de faturamento bruto, desconto e valor líquido (total negociado)."
+    columns:
+      - name: sales_item_id
+        description: "Chave primária do fato (equivale ao SalesOrderDetailID)."
+        tests: [not_null, unique]
+      - name: sales_order_id
+        description: "Identificador do pedido (FK para o nível de pedido)."
+        tests: [not_null]
+      - name: customer_id
+        description: "Identificador do cliente (FK para dim_customers)."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customers')
+              field: customer_id
+      - name: product_id
+        description: "Identificador do produto (FK para dim_products)."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_products')
+              field: product_id
+      - name: sales_reason
+        description: "Motivo da venda (texto desnormalizado para filtro rápido)."
+      - name: order_date
+        description: "Data do pedido (FK para dim_date.date_id)."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_id
+      - name: order_qty
+        description: "Quantidade comprada no item."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "order_qty >= 0"
+      - name: unit_price
+        description: "Preço unitário do produto."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "unit_price >= 0"
+      - name: unit_price_discount
+        description: "Desconto unitário aplicado."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "unit_price_discount >= 0"
+      - name: gross_revenue
+        description: "Faturamento bruto (order_qty * unit_price)."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "gross_revenue >= 0"
+      - name: discount_amount
+        description: "Valor de desconto (order_qty * unit_price_discount)."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "discount_amount >= 0"
+      - name: net_revenue
+        description: "Valor líquido/total negociado ((unit_price - unit_price_discount) * order_qty)."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "net_revenue >= 0"
+      - name: orders_count
+        description: "Flag para contagem de pedidos (1 por linha de item)."
+
+  - name: dim_products
+    description: "Dimensão de produtos com informações de preço e custo."
+    columns:
+      - name: product_id
+        description: "Chave primária do produto."
+        tests: [not_null, unique]
+      - name: product_name
+        description: "Nome do produto."
+      - name: list_price
+        description: "Preço de lista."
+      - name: standard_cost
+        description: "Custo padrão."
+
+  - name: dim_customers
+    description: "Dimensão de clientes (granularidade: CustomerID)."
+    columns:
+      - name: customer_id
+        description: "Chave primária do cliente."
+        tests: [not_null, unique]
+      - name: person_id
+        description: "Identificador da pessoa associado ao cliente."
+      - name: territory_id
+        description: "Território de vendas do cliente."
+
+  - name: dim_sales_reason
+    description: "Dimensão de motivos de venda."
+    columns:
+      - name: sales_reason_id
+        description: "Chave primária do motivo de venda."
+        tests: [not_null, unique]
+      - name: sales_reason
+        description: "Descrição do motivo de venda."
+
+  - name: dim_date
+    description: "Dimensão de tempo (calendário) derivada das datas de pedido."
+    columns:
+      - name: date_id
+        description: "Chave primária da dimensão de tempo (a própria data)."
+        tests: [not_null, unique]
+      - name: date
+        description: "Data (yyyy-mm-dd)."
+      - name: year
+        description: "Ano."
+      - name: month
+        description: "Mês (1-12)."
+      - name: year_month_label
+        description: "Rótulo YYYY-MM."
+      - name: first_day_of_month
+        description: "Primeiro dia do mês."

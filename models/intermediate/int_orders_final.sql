@@ -34,7 +34,7 @@ final as (
         i.product_name,
         i.order_qty,
         i.unit_price,
-        i.unit_precied_iscount,
+        i.unit_precied_discount,
         i.total_item_value,
         r.sales_reason
     from orders o

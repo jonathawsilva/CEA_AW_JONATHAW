@@ -23,8 +23,8 @@ items_enriched as (
         p.standard_cost,
         oi.order_qty,
         oi.unit_price,
-        oi.unit_precied_iscount,
-        (oi.order_qty * (oi.unit_price - oi.unit_precied_iscount)) as total_item_value
+        oi.unit_precied_discount,
+        (oi.order_qty * (oi.unit_price - oi.unit_precied_discount)) as total_item_value
     from order_items oi
     left join products p
         on oi.product_id = p.product_id
