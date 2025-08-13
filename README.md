@@ -1,15 +1,27 @@
-Welcome to your new dbt project!
+# Adventure Works — dbt
 
-### Using the starter project
+Projeto dbt (Cloud/Core) para modelagem das camadas **stage**, **intermediate** e **marts** a partir de `fea25_05.raw_adventure_works`.
 
-Try running the following commands:
-- dbt run
-- dbt test
+## Estrutura
+- `models/stage`: views padronizadas a partir das fontes (`sources`).
+- `models/intermediate`: joins e colunas derivadas (ex.: valores líquidos).
+- `models/marts`: dimensões e fato de vendas (granularidade: item de pedido).
 
+## Métricas-chave
+- **gross_revenue**: ver doc `gross_revenue`.
+- **discount_amount**: ver doc `discount_amount`.
+- **net_revenue**: ver doc `net_revenue`.
+- **ticket_medio (no BI)**: `sum(net_revenue) / count_distinct(sales_order_id)`.
 
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [dbt community](https://getdbt.com/community) to learn from other analytics engineers
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+## Rodando
+```bash
+# construir tudo
+dbt build
+
+# só uma camada
+dbt run --select stage
+dbt run --select intermediate
+dbt run --select marts
+
+# testes
+dbt test
