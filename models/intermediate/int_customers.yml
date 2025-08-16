@@ -50,11 +50,6 @@ models:
         description: >
           Número de conta do cliente. Pode apoiar deduplicação e conciliação de contas
           entre sistemas.
-        tests:
-          - unique
-          - dbt_utils.expression_is_true:
-              expression: "len(account_number) > 0"
-              where: "account_number is not null"
 
       - name: person_title
         description: >

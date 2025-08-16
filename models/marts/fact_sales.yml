@@ -19,7 +19,7 @@ models:
               field: date_id
               severity: error
 
-      - name: customer_id
+      - name: sk_cliente
         description: "Identificador do cliente."
         tests:
           - not_null

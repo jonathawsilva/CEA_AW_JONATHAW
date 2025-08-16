@@ -12,5 +12,5 @@ select
   , territory_id
   , first_name as primeiro_nome
   , last_name as ultimo_nome
-  , fist_name || ' ' || last_name as nome_completo
+  , first_name || ' ' || last_name as nome_completo
 from customers
