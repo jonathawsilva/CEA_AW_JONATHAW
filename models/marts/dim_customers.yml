@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: >
+      Dimensão de Clientes, reúne os identificadores de cliente, vínculo (quando houver) à
+      pessoa física e o território de vendas. Base para análises como “Top clientes por valor
+      negociado” e segmentações por região/território.
+
+    columns:
+      - name: customer_id
+        description: >
+          Identificador único do cliente no sistema transacional.
+          É a **chave primária** desta dimensão e deve ser estável ao longo do tempo.
+        tests:
+          - not_null
+          - unique
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: person_id
+        description: >
+          Identificador da **pessoa** associada ao cliente (quando aplicável).
+          Pode ser nulo (ex.: contas corporativas). Útil para enriquecer com dados da entidade “Person”.
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+              where: "person_id is not null"
+
+      - name: territory_id
+        description: >
+          Identificador do **território de vendas** do cliente. Permite análises por região,
+          como ranking de clientes por estado/país ou performance por território comercial.
+          Pode ser nulo quando o cliente não está associado a um território.
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+              where: "territory_id is not null"

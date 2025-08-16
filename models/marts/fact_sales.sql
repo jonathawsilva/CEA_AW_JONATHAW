@@ -16,18 +16,22 @@ select
   sales_reason,
 
   -- tempo
-  order_date,
-  date_trunc('month', order_date)::date             as order_month,
-  extract(year from order_date)::int                as order_year,
+  cast(order_date as date)                          as order_date,  -- garante tipo DATE
+  date_trunc('month', cast(order_date as date))::date as order_month,
+  extract(year from cast(order_date as date))::int  as order_year,
 
   -- medidas
   order_qty,
   unit_price,
   unit_precied_discount,
   (order_qty * unit_price)                          as gross_revenue,
-  (order_qty * unit_precied_discount)                 as discount_amount,
-  (order_qty * (unit_price - unit_precied_discount))  as net_revenue,
+  (order_qty * unit_precied_discount)               as discount_amount,
+  (order_qty * (unit_price - unit_precied_discount)) as net_revenue,
 
   -- contadores
   1                                                 as orders_count
 from src
+where cast(order_date as date) in (
+    select date_id
+    from {{ ref('dim_date') }}
+)

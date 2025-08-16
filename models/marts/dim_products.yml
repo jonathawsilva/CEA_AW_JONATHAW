@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: dim_products
+    description: >
+      Dimensão de Produtos. Cada linha representa um produto comercializado ou fabricado
+      pela empresa. Usada em análises de vendas por produto, ticket médio, margens e
+      comparações de preço.
+
+    columns:
+      - name: product_id
+        description: >
+          Identificador único do produto no sistema. É a chave primária da dimensão.
+        tests:
+          - not_null
+          - unique
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: product_name
+        description: >
+          Nome descritivo do produto exibido em relatórios e dashboards.
+        tests:
+          - not_null
+
+      - name: listprice
+        description: >
+          Preço de lista do produto (valor de catálogo antes de descontos).
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: standard_cost
+        description: >
+          Custo padrão de produção/obtenção do produto.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"

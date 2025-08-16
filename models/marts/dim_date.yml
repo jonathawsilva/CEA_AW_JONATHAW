@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: >
+      Dimensão de Datas usada como eixo temporal nas análises (dia, mês e ano).
+      Cada linha representa um dia do calendário e traz campos prontos para
+      agregações mensais/anuais e rotulagem no BI.
+
+    columns:
+      - name: date_id
+        description: >
+          Chave primária da dimensão de datas. É a própria data (tipo DATE).
+        tests:
+          - not_null
+          - unique
+
+
+      - name: date
+        description: >
+          Mesma data do `date_id` mantida por conveniência.
+        tests:
+          - not_null
+
+
+      - name: year
+        description: >
+          Ano numérico da data (ex.: 2023).
+        tests:
+          - not_null
+
+
+      - name: month
+        description: >
+          Mês numérico (1 a 12) da data.
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1,2,3,4,5,6,7,8,9,10,11,12]
+
+      - name: year_month_label
+        description: >
+          Rótulo amigável ano-mês no formato `YYYY-MM` (ex.: 2025-08).
+        tests:
+          - not_null
+
+      - name: first_day_of_month
+        description: >
+          Primeiro dia do mês da data, útil para agregações mensais.
+        tests:
+          - not_null

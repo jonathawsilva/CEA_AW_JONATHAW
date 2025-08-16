@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: int_order_items_enriched   # troque se o nome do seu modelo for outro
+    description: >
+      Itens de pedido enriquecidos com informações de produto. Cada linha representa um
+      item (detail) de um pedido, incluindo preço, desconto e o valor líquido do item.
+
+    columns:
+      - name: sales_order_detail_id
+        description: >
+          Identificador único do item do pedido. Deve ser único na tabela
+          e funciona como chave primária no nível de item.
+        tests:
+          - not_null
+          - unique
+
+      - name: sales_order_id
+        description: >
+          Identificador do pedido ao qual o item pertence. Serve para agrupar/contar
+          pedidos e consolidar itens.
+        tests:
+          - not_null
+
+      - name: product_id
+        description: >
+          Identificador do produto vendido no item. Usado para análises por produto
+          e para construir dimensões/fatos posteriores.
+        tests:
+          - not_null
+          
+
+      - name: product_name
+        description: >
+          Nome do produto no momento da venda, utilizado em visualizações e filtros
+          no BI. Pode ser nulo caso o join com produto não encontre correspondência.
+
+      - name: listprice
+        description: >
+          Preço de lista do produto (valor de catálogo). Ajuda a comparar preço praticado
+          vs. preço de lista.
+      
+
+      - name: standard_cost
+        description: >
+          Custo padrão do produto, útil para análises de margem/lucro.
+        
+
+      - name: order_qty
+        description: >
+          Quantidade vendida do item (unidades).
+        tests:
+          - not_null
+         
+
+      - name: unit_price
+        description: >
+          Preço unitário praticado na venda (antes do desconto).
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: unit_precied_discount
+        description: >
+          Desconto unitário aplicado ao item. Mantido exatamente com o nome do modelo.
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: total_item_value
+        description: >
+          Valor líquido do item: quantidade * (preço unitário - desconto unitário).
+          Métrica base para compor o total negociado.
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
