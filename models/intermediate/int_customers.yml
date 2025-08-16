@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: int_customers  
+    description: >
+      Tabela intermediária enriquecida com atributos de Pessoa. Cada linha representa um
+      cliente do CRM/Vendas, incluindo identificadores de conta e atributos pessoais
+      (título, primeiro nome, nome do meio, sobrenome e sufixo) para uso em campanhas,
+      CRM e análises por perfil.
+
+    columns:
+      - name: customer_id
+        description: >
+          Identificador único do cliente no sistema transacional.
+          É a **chave primária** desta dimensão.
+        tests:
+          - not_null
+          - unique
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: person_id
+        description: >
+          Identificador da pessoa associada ao cliente (Business Entity).
+          Como o join é interno, espera-se que esteja sempre preenchido.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: store_id
+        description: >
+          Identificador da loja/conta corporativa associada ao cliente (quando aplicável).
+          Útil para agrupar clientes por conta/loja-mãe.
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+              where: "store_id is not null"
+
+      - name: territory_id
+        description: >
+          Identificador do território de vendas do cliente. Base para segmentações
+          regionais e análises de performance comercial.
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+              where: "territory_id is not null"
+
+      - name: account_number
+        description: >
+          Número de conta do cliente. Pode apoiar deduplicação e conciliação de contas
+          entre sistemas.
+        tests:
+          - unique
+          - dbt_utils.expression_is_true:
+              expression: "len(account_number) > 0"
+              where: "account_number is not null"
+
+      - name: person_title
+        description: >
+          Título de tratamento (ex.: Sr., Sra., Dr.). Útil para comunicações e etiqueta.
+        tests: []
+
+      - name: first_name
+        description: >
+          Primeiro nome da pessoa vinculada ao cliente. Usado em comunicações e relatórios.
+        tests:
+          - not_null
+
+      - name: middle_name
+        description: >
+          Nome do meio (quando informado). Pode apoiar deduplicação e identificação.
+        tests: []
+
+      - name: last_name
+        description: >
+          Sobrenome da pessoa vinculada ao cliente. Usado em comunicações e relatórios.
+        tests:
+          - not_null
+
+      - name: person_suffix
+        description: >
+          Sufixo do nome (ex.: Jr., Filho, Neto), quando aplicável.
+        tests: []

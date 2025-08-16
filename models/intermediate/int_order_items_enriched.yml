@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: int_order_items_enriched   # troque se o nome do seu modelo for outro
+  - name: int_order_items_enriched   
     description: >
       Itens de pedido enriquecidos com informações de produto. Cada linha representa um
       item (detail) de um pedido, incluindo preço, desconto e o valor líquido do item.

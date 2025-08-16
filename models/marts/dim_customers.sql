@@ -1,5 +1,16 @@
+with 
+    customers as(
+        select *
+        from {{ ref('int_customers') }}
+    )
+
 select
-  c.customer_id,
-  c.person_id,
-  c.territory_id
-from {{ ref('stg_SALES_CUSTOMER') }} c
+  {{ dbt_utils.generate_surrogate_key(['customer_id'])}} as sk_cliente
+  , customer_id as id_cliente
+  , person_id
+  , store_id
+  , territory_id
+  , first_name as primeiro_nome
+  , last_name as ultimo_nome
+  , fist_name || ' ' || last_name as nome_completo
+from customers

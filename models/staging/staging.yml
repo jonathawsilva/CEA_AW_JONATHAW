@@ -6,6 +6,9 @@ sources:
     schema: raw_adventure_works
     description: "Dados de vendas da Adventure Works na camada raw"
     tables:
+      - name: PERSON_PERSON
+        description: "Dados referente aos nomes em geral"
+        
       - name: SALES_SALESORDERHEADER
         description: "Cabeçalho dos pedidos de vendas, contém informações gerais de cada pedido"
         columns:
