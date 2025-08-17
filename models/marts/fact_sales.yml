@@ -8,8 +8,8 @@ models:
         description: "Chave primária do fato."
         tests:
           - not_null
-
-
+          - unique
+      
       - name: order_date
         description: "Data do pedido, compatível com a chave da dimensão de datas."
         tests:
