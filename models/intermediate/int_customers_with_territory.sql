@@ -15,4 +15,4 @@ select
   t.territory_group
 from customers c
 left join territories t
-  on c.territory_id = t.territory_id
+  on c.territory_id = t.territory_id 
