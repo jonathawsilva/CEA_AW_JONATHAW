@@ -16,16 +16,15 @@ Este repositório contém todo o pipeline de dados desenvolvido para o desafio t
 ## 📁 Estrutura do Repositório
 
 ├── models/
-│ /├── stage/ # Tabelas brutas e renomeadas
-│ /├── intermediate/ # Enriquecimentos e joins intermediários
-│ /└── marts/ # Dimensões e fatos finais
-├── macros/
-├── snapshots/
-├── seeds/
-├── dbt_project.yml
-├── README.md
-└── CERTIFICACAO_INDICIUM.pbix # Arquivo Power BI
-
+│  ── stage/ # Tabelas brutas e renomeadas
+│  ── intermediate/ # Enriquecimentos e joins intermediários
+│  ── marts/ # Dimensões e fatos finais
+│  ── macros/
+│  ── snapshots/
+│──seeds/
+│──dbt_project.yml
+│──README.md
+│── CERTIFICACAO_INDICIUM.pbix # Arquivo Power BI
 
 ---
 
