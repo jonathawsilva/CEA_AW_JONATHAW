@@ -3,6 +3,7 @@
 Este repositório contém todo o pipeline de dados desenvolvido para o desafio técnico da Certificação Indicium, utilizando o **dbt Cloud** para transformação de dados e **Power BI** para construção de dashboards interativos.
 
 ---
+<<<<<<< HEAD
 
 ## 🚀 Visão Geral
 
@@ -25,8 +26,34 @@ Este repositório contém todo o pipeline de dados desenvolvido para o desafio t
 ├── dbt_project.yml
 ├── README.md
 └── CERTIFICACAO_INDICIUM.pbix # Arquivo Power BI
+=======
+>>>>>>> a0457933e9fe1b6174f00d8d5c3f3cb168741b91
 
+## 🚀 Visão Geral
 
+<<<<<<< HEAD
+=======
+- **Fonte de dados**: Banco `raw_adventure_works` no Snowflake.
+- **Transformações**: Organizadas em camadas `stage`, `intermediate` e `marts`, utilizando boas práticas do dbt.
+- **Modelagem**: Aplicação de testes automáticos, chaves primárias, relacionamento entre dimensões e fato, além de validações com `dbt-utils`.
+- **Visualização**: Dashboard criado no Power BI respondendo às perguntas de negócio com filtros dinâmicos e visualizações intuitivas.
+
+---
+
+## 📁 Estrutura do Repositório
+
+├── models/
+│  ── stage/ # Tabelas brutas e renomeadas
+│  ── intermediate/ # Enriquecimentos e joins intermediários
+│  ── marts/ # Dimensões e fatos finais
+│  ── macros/
+│  ── snapshots/
+│──seeds/
+│──dbt_project.yml
+│──README.md
+│── CERTIFICACAO_INDICIUM.pbix # Arquivo Power BI
+
+>>>>>>> a0457933e9fe1b6174f00d8d5c3f3cb168741b91
 ---
 
 ## 🧱 Camadas dbt
