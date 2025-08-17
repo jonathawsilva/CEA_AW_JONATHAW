@@ -37,6 +37,11 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   cea_aw_jonathaw:
-    # Applies to all files under models/example/
-    example:
-  
+    stage:
+      +schema: stage  # todos os modelos da pasta stage irão para o schema "stage"
+    intermediate:
+      +schema: intermediate
+    marts:
+      +schema: marts
+      +materialized: table
+

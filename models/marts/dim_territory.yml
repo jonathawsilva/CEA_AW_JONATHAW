@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: dim_territory
+    description: "Dimensão de territórios de vendas para análises por região/país."
+    columns:
+      - name: territory_id
+        description: "Chave primária do território."
+      
+      - name: territory_name
+        description: "Nome do território."
+     
+      - name: country_code
+        description: "Código do país (ISO)."
+     
+      - name: territory_group
+        description: "Agrupamento macro do território."

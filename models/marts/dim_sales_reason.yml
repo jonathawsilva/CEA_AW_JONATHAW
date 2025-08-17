@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: dim_sales_reason
+    description: >
+      Dimensão de Motivos de Venda. Cada linha representa um motivo que pode estar
+      associado a um pedido (ex.: Promotion, Other, Marketing). Usada em análises
+      de campanhas, descontos e avaliação de desempenho comercial.
+
+    columns:
+      - name: sales_reason_id
+        description: >
+          Identificador único do motivo de venda. É a chave primária da dimensão.
+        tests:
+          - not_null
+          - unique
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: sales_reason
+        description: >
+          Nome/descrição amigável do motivo de venda (ex.: Promotion, Other).
+        tests:
+          - not_null

@@ -22,20 +22,20 @@ creditcards as (
 orders_enriched as (
 
     select
-        oh.salesorderid,
-        oh.customerid,
-        c.personid,
-        oh.creditcardid,
-        cc.cardtype,
+        oh.sales_order_id,
+        oh.customer_id,
+        c.person_id,
+        oh.credit_card_id,
+        cc.card_type,
         oh.status,
-        oh.totaldue,
-        oh.orderdate,
-        oh.shipdate
+        oh.total_due,
+        oh.order_date,
+        oh.ship_date
     from order_header oh
     left join customers c 
-        on oh.customerid = c.customerid
+        on oh.customer_id = c.customer_id
     left join creditcards cc 
-        on oh.creditcardid = cc.creditcardid
+        on oh.credit_card_id = cc.credit_card_id
 
 )
 

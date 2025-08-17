@@ -1,0 +1,103 @@
+version: 2
+
+models:
+  - name: int_orders_final
+    description: >
+      Visão intermediária que combina pedidos, itens e motivos de venda.
+      Granularidade: item de pedido (uma linha por sales_order_detail_id),
+      com atributos do pedido, do produto e o motivo da venda.
+
+    columns:
+      # CHAVES / IDENTIFICADORES
+      - name: sales_order_detail_id
+        description: >
+          Identificador único do item de pedido. Deve ser único nesta tabela e
+          representa a granularidade do registro.
+        tests:
+          - not_null
+        
+
+      - name: sales_order_id
+        description: >
+          Identificador do pedido ao qual o item pertence. Útil para agregações no
+          nível de pedido e contagem de pedidos distintos.
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: >
+          Identificador do cliente do pedido. Usado para análises por cliente e
+          construção de dimensões/fatos posteriores.
+        tests:
+          - not_null
+
+      - name: product_id
+        description: >
+          Identificador do produto vendido no item.
+        tests:
+          - not_null
+        
+
+      # ATRIBUTOS DO PRODUTO / ITEM
+      - name: product_name
+        description: >
+          Nome do produto no momento da venda (pode ser nulo se não houver match no join).
+
+      - name: order_qty
+        description: >
+          Quantidade vendida do item (unidades).
+        tests:
+          - not_null
+        
+      - name: unit_price
+        description: >
+          Preço unitário praticado na venda (antes do desconto).
+        tests:
+          - not_null
+          
+
+      - name: unit_precied_discount
+        description: >
+          Desconto unitário aplicado ao item (mesma unidade do preço). Mantido
+          exatamente com o nome do modelo.
+      
+        
+      - name: total_item_value
+        description: >
+          Valor líquido do item: order_qty * (unit_price - unit_precied_discount).
+          Base para o total negociado no fato.
+       
+
+      # ATRIBUTOS DO PEDIDO
+      - name: person_id
+        description: >
+          Identificador da pessoa associada ao cliente (quando aplicável). Pode ser nulo.
+
+      - name: card_type
+        description: >
+          Tipo do cartão usado no pedido (ex.: Visa, MasterCard). Pode ser nulo.
+
+      - name: status
+        description: >
+          Status do pedido (1=Em processo; 2=Aprovado; 3=Em espera; 4=Rejeitado; 5=Enviado; 6=Cancelado).
+        
+
+      - name: total_due
+        description: >
+          Valor total do pedido incluindo impostos e frete.
+        
+
+      - name: order_date
+        description: >
+          Data em que o pedido foi realizado. Base para análises temporais.
+        tests:
+          - not_null
+
+      - name: ship_date
+        description: >
+          Data de envio do pedido ao cliente. Pode ser nula (pedido não enviado ainda).
+
+      # MOTIVO
+      - name: sales_reason
+        description: >
+          Motivo da venda associado ao pedido (ex.: Promotion). Pode ser nulo quando não informado.

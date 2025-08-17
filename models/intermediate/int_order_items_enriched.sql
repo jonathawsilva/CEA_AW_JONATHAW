@@ -15,19 +15,19 @@ products as (
 items_enriched as (
 
     select
-        oi.salesorderdetailid,
-        oi.salesorderid,
-        oi.productid,
+        oi.sales_order_detail_id,
+        oi.sales_order_id,
+        oi.product_id,
         p.name as product_name,
         p.listprice,
-        p.standardcost,
-        oi.orderqty,
-        oi.unitprice,
-        oi.unitpricediscount,
-        (oi.orderqty * (oi.unitprice - oi.unitpricediscount)) as totalitemvalue
+        p.standard_cost,
+        oi.order_qty,
+        oi.unit_price,
+        oi.unit_precied_discount,
+        (oi.order_qty * (oi.unit_price - oi.unit_precied_discount)) as total_item_value
     from order_items oi
     left join products p
-        on oi.productid = p.product_id
+        on oi.product_id = p.product_id
 
 )
 

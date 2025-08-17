@@ -21,27 +21,27 @@ reasons as (
 final as (
 
     select
-        o.salesorderid,
-        o.customerid,
-        o.personid,
-        o.cardtype,
+        o.sales_order_id,
+        o.customer_id,
+        o.person_id,
+        o.card_type,
         o.status,
-        o.totaldue,
-        o.orderdate,
-        o.shipdate,
-        i.salesorderdetailid,
-        i.productid,
-        i.productname,
-        i.orderqty,
-        i.unitprice,
-        i.unitpricediscount,
-        i.totalitemvalue,
-        r.salesreason
+        o.total_due,
+        o.order_date,
+        o.ship_date,
+        i.sales_order_detail_id,
+        i.product_id,
+        i.product_name,
+        i.order_qty,
+        i.unit_price,
+        i.unit_precied_discount,
+        i.total_item_value,
+        r.sales_reason
     from orders o
     left join items i
-        on o.salesorderid = i.salesorderid
+        on o.sales_order_id = i.sales_order_id
     left join reasons r
-        on o.salesorderid = r.salesorderid
+        on o.sales_order_id = r.sales_order_id
 
 )
 

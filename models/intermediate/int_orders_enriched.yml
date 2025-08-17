@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: int_orders_enriched
+    description: >
+      Pedidos de venda enriquecidos com informações de cliente e cartão de crédito.
+      Cada linha representa um pedido e consolida dados do cabeçalho do pedido com
+      dados cadastrais do cliente e informações do cartão usado na transação.
+
+    columns:
+      - name: sales_order_id
+        description: >
+          Identificador único do pedido de venda. Funciona como chave primária
+          no nível de pedido.
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: >
+          Identificador do cliente responsável pelo pedido. Usado para análises
+          de comportamento de compra e relacionamento com clientes.
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: person_id
+        description: >
+          Identificador da pessoa associada ao cliente (quando aplicável).
+          Pode ser nulo para clientes corporativos ou registros sem vínculo direto
+          com pessoa física.
+
+      - name: credit_card_id
+        description: >
+          Identificador do cartão de crédito utilizado na transação. Permite
+          cruzar com a dimensão de cartões.
+       
+
+      - name: card_type
+        description: >
+          Tipo do cartão de crédito (ex.: Visa, MasterCard) informado no pedido.
+          Útil para análises de meios de pagamento.
+
+      - name: status
+        description: >
+          Status do pedido no processo de venda (1=Em processo; 2=Aprovado;
+          3=Em espera; 4=Rejeitado; 5=Enviado; 6=Cancelado).
+        tests:
+          - not_null
+
+      - name: total_due
+        description: >
+          Valor total do pedido incluindo impostos e frete. Métrica usada
+          em análises de faturamento consolidado.
+       
+      - name: order_date
+        description: >
+          Data em que o pedido foi realizado. Permite análises temporais
+          (dia, mês, ano, sazonalidade).
+        tests:
+          - not_null
+
+      - name: ship_date
+        description: >
+          Data em que o pedido foi enviado ao cliente. Útil para métricas
+          de logística e SLA de entrega.

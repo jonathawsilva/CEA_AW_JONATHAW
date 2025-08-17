@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: >
+      Dimensão de Clientes derivada da camada intermediate (int_customers).
+      Cada linha representa um cliente único e inclui chaves de negócio e
+      atributos para identificação e exibição (nome e nome completo).
+
+    columns:
+      - name: sk_cliente
+        description: >
+          Chave substituta (surrogate key) da dimensão, gerada via
+          dbt_utils.generate_surrogate_key a partir de customer_id.
+          Usada como PK da dimensão.
+        tests:
+          - not_null
+          - unique
+
+      - name: id_cliente
+        description: >
+          Identificador de negócio do cliente (customer_id) no sistema fonte.
+          Deve ser único na dimensão.
+        tests:
+          - not_null
+          - unique
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+
+      - name: person_id
+        description: >
+          Identificador da pessoa associada ao cliente (quando aplicável).
+          Pode ser nulo para contas corporativas.
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+              where: "person_id is not null"
+          # (opcional) relacionamento com uma dimensão de pessoas, se existir:
+          # - relationships:
+          #     to: ref('dim_pessoas')
+          #     field: person_id
+
+      - name: store_id
+        description: >
+          Identificador da loja/conta corporativa associada ao cliente (quando houver).
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+              where: "store_id is not null"
+
+      - name: territory_id
+        description: >
+          Identificador do território de vendas do cliente. Útil para análises regionais.
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+              where: "territory_id is not null"
+
+      - name: primeiro_nome
+        description: >
+          Primeiro nome do cliente (exibição e comunicação).
+        tests:
+          - not_null
+
+      - name: ultimo_nome
+        description: >
+          Sobrenome do cliente (exibição e comunicação).
+        tests:
+          - not_null
+
+      - name: nome_completo
+        description: >
+          Nome completo do cliente no formato "<primeiro_nome> <ultimo_nome>".
+          Facilita exibição em relatórios e dashboards.
+        tests:
+          - not_null
+

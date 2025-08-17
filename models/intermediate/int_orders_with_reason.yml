@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: int_orders_with_reason
+    description: >
+      Tabela intermediária que relaciona cada pedido aos seus motivos de venda.
+      Um pedido pode ter um ou mais motivos. Granularidade: (sales_order_id, sales_reason_id).
+
+    columns:
+      - name: sales_order_id
+        description: >
+          Identificador do pedido de venda. Pode se repetir, pois um mesmo pedido
+          pode ter múltiplos motivos associados.
+        tests:
+          - not_null
+        
+      - name: sales_reason_id
+        description: >
+          Identificador do motivo da venda associado ao pedido (ex.: Promotion).
+          Para um mesmo pedido podem existir múltiplas linhas com motivos diferentes.
+        tests:
+          - not_null
+         
+      - name: sales_reason
+        description: >
+          Nome/descrição amigável do motivo da venda (texto). Usado para filtros e análises.
+
+    tests:
+      # Garante que não existam duplicidades do par (pedido, motivo)
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['sales_order_id', 'sales_reason_id']

@@ -9,9 +9,9 @@ source as (
 renamed as (
 
     select
-        salesorderid,
-        salesreasonid,
-        modifieddate
+        salesorderid as sales_order_id,
+        salesreasonid as sales_reason_id,
+        modifieddate as modifed_date
 
     from source
 
