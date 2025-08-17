@@ -1,37 +1,44 @@
 with src as (
   select *
-  from {{ ref('int_orders_final') }}
+  from {{ ref('int_orders_final') }}  -- contém customer_id, etc.
+),
+cust as (
+  select
+    customer_id,
+    territory_id
+  from {{ ref('int_customers_with_territory') }}
 )
 
 select
   -- chaves
-  sales_order_detail_id                              as sales_item_id,   -- PK do fato
-  sales_order_id,
-  customer_id,
-  product_id,
+  i.sales_order_detail_id                               as sales_item_id,   -- PK do fato
+  i.sales_order_id,
+  i.customer_id                                         as customer_id,     -- QUALIFICADO
+  i.product_id,
+
+  -- + território (novo atributo)
+  c.territory_id                                        as territory_id,
 
   -- dimensões de negócio
-  card_type,
-  status,
-  sales_reason,
+  i.card_type,
+  i.status,
+  i.sales_reason,
 
   -- tempo
-  cast(order_date as date)                          as order_date,  -- garante tipo DATE
-  date_trunc('month', cast(order_date as date))::date as order_month,
-  extract(year from cast(order_date as date))::int  as order_year,
+  i.order_date,
+  date_trunc('month', i.order_date)::date               as order_month,
+  extract(year from i.order_date)::int                  as order_year,
 
   -- medidas
-  order_qty,
-  unit_price,
-  unit_precied_discount,
-  (order_qty * unit_price)                          as gross_revenue,
-  (order_qty * unit_precied_discount)               as discount_amount,
-  (order_qty * (unit_price - unit_precied_discount)) as net_revenue,
+  i.order_qty,
+  i.unit_price,
+  i.unit_precied_discount,
+  (i.order_qty * i.unit_price)                          as gross_revenue,
+  (i.order_qty * i.unit_precied_discount)               as discount_amount,
+  (i.order_qty * (i.unit_price - i.unit_precied_discount)) as net_revenue,
 
   -- contadores
-  1                                                 as orders_count
-from src
-where cast(order_date as date) in (
-    select date_id
-    from {{ ref('dim_date') }}
-)
+  1                                                     as orders_count
+from src i
+left join cust c
+  on i.customer_id = c.customer_id

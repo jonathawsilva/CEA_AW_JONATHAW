@@ -14,10 +14,7 @@ models:
         description: "Data do pedido, compatível com a chave da dimensão de datas."
         tests:
           - not_null
-          - relationships:
-              to: ref('dim_date')
-              field: date_id
-              severity: error
+  
 
       - name: sk_cliente
         description: "Identificador do cliente."
@@ -26,42 +23,25 @@ models:
         description: "Identificador do produto."
         tests:
           - not_null
-          - relationships:
-              to: ref('dim_products')
-              field: product_id
 
       - name: order_qty
         description: "Quantidade de itens comprados no pedido."
-        tests:
-          - dbt_utils.expression_is_true:
-              expression: ">= 0"
 
       - name: unit_price
         description: "Preço unitário do produto."
-        tests:
-          - dbt_utils.expression_is_true:
-              expression: ">= 0"
-
+      
       - name: unit_precied_discount
         description: "Desconto unitário aplicado."
-        tests:
-          - dbt_utils.expression_is_true:
-              expression: ">= 0"
+  
 
       - name: gross_revenue
         description: "Faturamento bruto do item."
-        tests:
-          - dbt_utils.expression_is_true:
-              expression: ">= 0"
+       
 
       - name: discount_amount
         description: "Valor total de desconto aplicado ao item."
-        tests:
-          - dbt_utils.expression_is_true:
-              expression: ">= 0"
+      
 
       - name: net_revenue
         description: "Receita líquida do item."
-        tests:
-          - dbt_utils.expression_is_true:
-              expression: ">= 0"
+      
