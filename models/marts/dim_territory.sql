@@ -1,10 +1,7 @@
-with territories as (
-    select
-        territoryid             as territory_id,
-        name                    as territory_name,
-        countryregioncode       as country_code,
-        "group"                 as territory_group
-    from {{ ref('stg_SALES_SALESTERRITORY') }}
-)
+select
+  territory_id,
+  territory_name,
+  country_code,
+  territory_group
+from {{ ref('stg_SALESTERRITORY') }}
 
-select * from territories

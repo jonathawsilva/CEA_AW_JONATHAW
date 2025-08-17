@@ -9,9 +9,6 @@ sources:
       - name: PERSON_PERSON
         description: "Dados referente aos nomes em geral"
 
-      - name: SALES_SALESTERRITORY
-        description: "Dados referente aos territorios das vendas"
-
       - name: SALES_SALESORDERHEADER
         description: "Cabeçalho dos pedidos de vendas, contém informações gerais de cada pedido"
         columns:
@@ -107,3 +104,15 @@ sources:
             description: "Ligação com a tabela SalesOrderHeader"
           - name: SalesReasonID
             description: "Ligação com a tabela SalesReason"
+
+      - name: SALES_SALESTERRITORY
+        description: "Territórios de vendas (definição de regiões e países)"
+        columns:
+          - name: TerritoryID
+            description: "Chave primária do território"
+          - name: Name
+            description: "Nome do território"
+          - name: CountryRegionCode
+            description: "Código do país (ISO)"
+          - name: "group"
+            description: "Agrupamento macro do território (ex.: North America, Europe)"
