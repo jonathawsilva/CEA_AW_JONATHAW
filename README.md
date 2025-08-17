@@ -16,9 +16,9 @@ Este repositório contém todo o pipeline de dados desenvolvido para o desafio t
 ## 📁 Estrutura do Repositório
 
 ├── models/
-│ ├── stage/ # Tabelas brutas e renomeadas
-│ ├── intermediate/ # Enriquecimentos e joins intermediários
-│ └── marts/ # Dimensões e fatos finais
+│ /├── stage/ # Tabelas brutas e renomeadas
+│ /├── intermediate/ # Enriquecimentos e joins intermediários
+│ /└── marts/ # Dimensões e fatos finais
 ├── macros/
 ├── snapshots/
 ├── seeds/
