@@ -7,22 +7,31 @@ cust as (
     customer_id,
     territory_id
   from {{ ref('int_customers_with_territory') }}
+  qualify row_number() over (partition by customer_id order by territory_id) = 1
 )
 
 select
   -- chaves
   i.sales_order_detail_id                               as sales_item_id,   -- PK do fato
-  i.sales_order_id,
-  i.customer_id                                         as customer_id,     -- QUALIFICADO
-  i.product_id,
 
-  -- + território (novo atributo)
-  c.territory_id                                        as territory_id,
+  -- 📦 Chaves substitutas para dimensões
+  {{ dbt_utils.generate_surrogate_key(['i.customer_id']) }}     as sk_cliente,
+  {{ dbt_utils.generate_surrogate_key(['i.product_id']) }}      as sk_produto,
+  {{ dbt_utils.generate_surrogate_key(['i.order_date']) }}      as sk_data,
+  {{ dbt_utils.generate_surrogate_key(['c.territory_id']) }}    as sk_territorio,
+  {{ dbt_utils.generate_surrogate_key(['i.sales_reason']) }}    as sk_sales_reason,
+
+  
+    -- 🧩 Dimensões adicionais 
+  i.customer_id as customer_id, 
+  i.product_id,
+  c.territory_id as territory_id,
+  i.sales_order_id,
+  i.sales_reason,
 
   -- dimensões de negócio
   i.card_type,
   i.status,
-  i.sales_reason,
 
   -- tempo
   i.order_date,
