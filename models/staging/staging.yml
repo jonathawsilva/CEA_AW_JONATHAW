@@ -8,7 +8,10 @@ sources:
     tables:
       - name: PERSON_PERSON
         description: "Dados referente aos nomes em geral"
-        
+
+      - name: SALES_SALESTERRITORY
+        description: "Dados referente aos territorios das vendas"
+
       - name: SALES_SALESORDERHEADER
         description: "Cabeçalho dos pedidos de vendas, contém informações gerais de cada pedido"
         columns:

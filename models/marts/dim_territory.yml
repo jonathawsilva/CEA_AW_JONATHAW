@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: dim_territory
+    description: >
+      Dimensão de territórios de vendas. Permite análises geográficas e regionais
+      das vendas, conectando clientes e pedidos aos territórios definidos no
+      sistema transacional.
+
+    columns:
+      - name: territory_id
+        description: "Identificador único do território de vendas."
+        tests:
+          - not_null
+          - unique
+
+      - name: territory_name
+        description: "Nome descritivo do território (ex.: Northwest, Southeast)."
+        tests:
+          - not_null
+
+      - name: country_code
+        description: "Código do país associado ao território, em padrão ISO."
+        tests:
+          - not_null
+
+      - name: territory_group
+        description: "Agrupamento macro do território (ex.: North America, Europe)."

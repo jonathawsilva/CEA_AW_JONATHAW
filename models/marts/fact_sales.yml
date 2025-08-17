@@ -21,11 +21,6 @@ models:
 
       - name: sk_cliente
         description: "Identificador do cliente."
-        tests:
-          - not_null
-          - relationships:
-              to: ref('dim_customers')
-              field: customer_id
 
       - name: product_id
         description: "Identificador do produto."

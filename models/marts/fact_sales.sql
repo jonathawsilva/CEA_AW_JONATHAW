@@ -7,7 +7,7 @@ select
   -- chaves
   sales_order_detail_id                              as sales_item_id,   -- PK do fato
   sales_order_id,
-  sk_cliente,
+  customer_id,
   product_id,
 
   -- dimensões de negócio
