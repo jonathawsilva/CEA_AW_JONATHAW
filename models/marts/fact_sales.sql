@@ -17,9 +17,9 @@ select
   -- 📦 Chaves substitutas para dimensões
   {{ dbt_utils.generate_surrogate_key(['i.customer_id']) }}     as sk_cliente,
   {{ dbt_utils.generate_surrogate_key(['i.product_id']) }}      as sk_produto,
-  {{ dbt_utils.generate_surrogate_key(['i.order_date']) }}      as sk_data,
+  {{ dbt_utils.generate_surrogate_key(['i.date_day']) }}      as sk_data,
   {{ dbt_utils.generate_surrogate_key(['c.territory_id']) }}    as sk_territorio,
-  {{ dbt_utils.generate_surrogate_key(['i.sales_reason']) }}    as sk_sales_reason,
+  {{ dbt_utils.generate_surrogate_key(['i.sales_reason_id']) }}    as sk_sales_reason,
 
   
     -- 🧩 Dimensões adicionais 

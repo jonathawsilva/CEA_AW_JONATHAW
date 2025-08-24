@@ -13,4 +13,3 @@ select
   to_char(date_day, 'YYYY-MM')                             as year_month_label,
   date_trunc('month', date_day)::date                      as first_day_of_month
 from dates
-
